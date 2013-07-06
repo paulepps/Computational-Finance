@@ -1,23 +1,17 @@
-# lab9.r		 lab9 calculations
-#
-# author: Eric Zivot
-# created: November 1, 2008
-# revised: August 11, 2011
-#
 # comments:
-# Data for the lab are in the Excel file econ424lab7returns.csv, which contains monthly continuously 
-# compounded returns on Boeing, Nordstrom, Starbucks and Microsoft stocks over
-# the period March, 1995 through January, 2000.
+# Data for the lab are in the Excel file lab9returns.csv, which contains monthly continuously 
+# compounded returns on Boeing, Nordstrom, Starbucks and Microsoft stocks.
+
 options(digits=4, width=70)
 library("zoo")
+
 # load the data into a zoo object using the zoo function read.csv
 source(file="portfolio.r")
 
-lab9.df = read.csv("Data/lab9returns.csv", stringsAsFactors=F)
-colnames(lab9.df)
+lab9.df = read.csv("lab9returns.csv", stringsAsFactors=F)
 
 #
-# 2. Create zoo object from data and dates in lab9.df
+# Create zoo object from data and dates in lab9.df
 #    
 
 lab9.z = zoo(x=lab9.df[, -1], 
@@ -27,7 +21,7 @@ end(lab9.z)
 colnames(lab9.z)
 
 #
-# 3. Create timePlots of data
+# Create timeplots of data
 #
 
 # create custom panel function to draw horizontal line at zero in each panel
@@ -42,19 +36,16 @@ plot(lab9.z, lwd=2, panel=my.panel, col="blue")
 plot(lab9.z, plot.type = "single", main="lab9 returns",
      col=1:4, lwd=2)
 abline(h=0)
-legend(x="bottomleft", legend=colnames(lab9.z), col=1:4, lwd=2)
+legend(x="bottomleft", legend=colnames(lab7.z), col=1:4, lwd=2)
      
-
 #
-# 4. Compute pairwise scatterplots
+# Compute pairwise scatterplots
 #
-
 pairs(coredata(lab9.z), col="blue", pch=16)
 
 #
-# 5. Compute estimates of CER model parameters
+# Compute estimates of CER model parameters
 #
-
 muhat.vals = apply(lab9.z, 2, mean)
 muhat.vals
 sigma2hat.vals = apply(lab9.z, 2, var)
@@ -67,13 +58,13 @@ cor.mat = cor(lab9.z)
 cor.mat
 
 #
-# 6. Export means and covariance matrix to .csv file for
-#    import to Excel. Be sure to change the directories to the appropriate ones on your
-#    computer
+# Export means and covariance matrix to .csv file for
+# mport to Excel. Be sure to change the directories to the appropriate ones on your
+# computer
 #
 
-write.csv(muhat.vals, file="C:\\Users\\Paul\\Documents\\Coursera\\Computational Finance\\muhatVals.csv")
-write.csv(cov.mat, file="C:\\Users\\Paul\\Documents\\Coursera\\Computational Finance\\covMat.csv")
+write.csv(muhat.vals, file="C:\\Users\\pepps\\Documents\\econ424\\muhatVals.csv")
+write.csv(cov.mat, file="C:\\Users\\pepps\\Documents\\econ424\\covMat.csv")
 
 #
 # portfolio theory calculations using functions in portfolio.r
@@ -109,6 +100,3 @@ x.tan = sigmahat.vals["Starbucks"]/tan.port$sd
 x.tan
 mu.pe = 0.005 + x.tan*(tan.port$er - 0.005)
 mu.pe
-
-
-
